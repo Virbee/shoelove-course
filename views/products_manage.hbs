@@ -13,38 +13,25 @@
 
     </thead>
     <tbody>
+      {{#each products}}
       <tr class="table-row">
         <td class="table-division">
-          <div><img src="/medias/img/shoe.png" alt="img" class="table-image" /></div>
+          <div><img src="{{this.img}}" alt="img" class="table-image" /></div>
         </td>
         <td class="table-division">
-          <div>Nike Revolution</div>
+          <div>{{this.name}}</div>
         </td>
         <td class="table-division">
-          <div>$34</div>
+          <div>${{this.price}}</div>
         </td>
         <td class="table-division">
-          <div>N2345H</div>
+          <div>{{this.ref}}</div>
         </td>
-        <td class="table-division"><a href="/product_edit" class="fa fa-edit table-icon"></a>
-        <td class="table-division"><a href="" class="fa fa-trash table-icon" aria-hidden="true"></a></td>
+        <td class="table-division"><a href="/product-edit/{{this._id}}" class="fa fa-edit table-icon"></a>
+        <td class="table-division"><a href="/delete/{{this._id}} " class="fa fa-trash table-icon"
+            aria-hidden="true"></a></td>
       </tr>
-      <tr class="table-row">
-        <td class="table-division">
-          <div><img src="/medias/img/shoe.png" alt="img" class="table-image" /></div>
-        </td>
-        <td class="table-division">
-          <div>Nike Revolution</div>
-        </td>
-        <td class="table-division">
-          <div>$34</div>
-        </td>
-        <td class="table-division">
-          <div>N2345H</div>
-        </td>
-        <td class="table-division"><a href="/product-edit" class="fa fa-edit table-icon"></a>
-        <td class="table-division"><a href="" class="fa fa-trash table-icon" aria-hidden="true"></a></td>
-      </tr>
+      {{/each}}
     </tbody>
   </table>
 </div>
