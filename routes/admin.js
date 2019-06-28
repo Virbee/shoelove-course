@@ -1,6 +1,23 @@
 const express = require("express");
 const router = new express.Router();
 const Product = require("../models/Product");
+const authRoutes = require("../routes/auth-routes");
+router.use(authRoutes);
+
+router.get("/logout", (req, res, next) => {
+  req.session.destroy(err => {
+    console.log("SESSION TERMINATED");
+    res.redirect("/");
+  });
+});
+
+router.use((req, res, next) => {
+  if (req.session.currentUser) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+});
 
 //////////////ADD A PRODUCT/////////////////
 
@@ -65,8 +82,11 @@ router.post("/product-edit/:id", (req, res) => {
     .catch(err => console.log(err));
 });
 
+////////////DELETE/////////////
+///////////////////////////////
+
 router.get("/delete/:id", (req, res) => {
-  Product.findByIdAndDelete(req.params.id).then(product =>
+  Product.findByIdAndDelete(req.params.id).then(() =>
     res.redirect("/prod-manage").catch(err => console.log(err))
   );
 });

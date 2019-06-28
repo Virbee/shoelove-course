@@ -3,8 +3,8 @@ const router = new express.Router();
 const data = require("../bin/seeds");
 const Product = require("../models/Product");
 //importer data
-//importer modèle
 
+///////AFFICHAGE DYNAMIQUE//////////
 router.get(["/", "/home"], (req, res) => {
   res.render("index");
 });
@@ -24,20 +24,6 @@ router.get(["/collection", "/kids", "/women", "/men"], (req, res) => {
     .then(product => {
       res.render("products", { title: cat, product });
     })
-    .catch(err => console.log(err));
-});
-
-router.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-router.get("/login", (req, res) => {
-  res.render("login");
-});
-
-router.get("/one-product/:id", (req, res) => {
-  Product.findById(req.params.id)
-    .then(product => res.render("one_product", { product }))
     .catch(err => console.log(err));
 });
 
