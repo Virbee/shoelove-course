@@ -38,6 +38,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+///////IS LOGGED ?////////////
+
+function isLoggedIn(req, res, next) {
+  app.locals.isLoggedIn = Boolean(req.session.currentUser);
+  next();
+}
+app.use(isLoggedIn);
+
+function isLoggedOut(req, res, next) {
+  app.locals.isLoggedOut = Boolean(!req.session.currentUser);
+  next();
+}
+app.use(isLoggedOut);
+
+/////////ROUTES////////
+
 const basePageRouter = require("./routes/index"); //views qui montrent les chaussures
 const authRoutes = require("./routes/auth-routes"); // views pour se logger
 const adminRouter = require("./routes/admin"); // views secrètes
@@ -46,21 +62,10 @@ app.use(basePageRouter);
 app.use(adminRouter);
 app.use(authRoutes);
 
-///////gérer les next///////
+///////404 ERROR FUNCTION///////
 app.use((req, res, next) => {
   res.status(404);
   res.render("not-found");
-});
-
-app.use((err, req, res, next) => {
-  // always log the error
-  console.error("ERROR", req.method, req.path, err);
-
-  // only render if the error ocurred before sending the response
-  if (!res.headersSent) {
-    res.status(500);
-    res.render("error");
-  }
 });
 
 const listener = app.listen(process.env.PORT || 8000, () => {
