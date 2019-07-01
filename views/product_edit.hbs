@@ -9,10 +9,14 @@
       <label for="sneacker-ref" class="label-ref label">Réf.</label>
       <input type="text" class="input-text input" name="ref" value="{{product.ref}}">
     </div>
-    <div class="form-item-wrapper flexed-item">
-      <label for="sneacker-size" class="label-ref label">Size</label>
-      <input type="number" class="input-text input" min="30" max="44" name="sizes">
-    </div>
+    <fieldset class="form-item-wrapper flexed-item">
+      <legend>Select sizes</legend>
+      {{#each sizes}}
+      <div><input type="checkbox" class="input-text input" name="sizes" id="{{this.size}}" value="{{this.size}}"
+          {{#if this.checked}} checked {{/if}}>
+        <label for="{{this.size}}" class="label-ref label">{{this.size}}</label></div>
+      {{/each }}
+    </fieldset>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-descr" class="label-descr label">Description</label>
       <input type="text" class="input-text input" value="{{product.description}}" name="description">
@@ -25,9 +29,9 @@
       <label for="sneacker-main-cat" class="label-main-cat label">Category</label>
       <select name="category" id="main_category" class="select">
         <option value="">Choose main Category...</option>
-        <option value="men">Men</option>
-        <option value="women">Women</option>
-        <option value="kids">Kids</option>
+        {{#each category}}
+        <option value="{{this.cat}}" {{#if this.selected}} selected {{/if}}>{{this.cat}}</option>
+        {{/each}}
       </select>
     </div>
     <div class="form-item-wrapper flexed-item">

@@ -27,6 +27,12 @@ router.get(["/collection", "/kids", "/women", "/men"], (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.get("/one-product/:id", (req, res) => {
+  Product.findById(req.params.id)
+    .then(product => res.render("one_product", { product }))
+    .catch(err => console.log(err));
+});
+
 //insertion des chaussures
 function insertData(data) {
   Product.insertMany(data)

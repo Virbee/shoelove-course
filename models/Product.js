@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+//const Tag = require("./Tag");
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
@@ -36,7 +37,7 @@ const ProductSchema = new Schema({
     enum: ["women", "kids", "men"]
   },
   price: { type: Number, required: true },
-  id_tags: { type: Object }
+  id_tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }]
 });
 
 const Product = mongoose.model("Product", ProductSchema);

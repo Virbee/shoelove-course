@@ -1,8 +1,28 @@
 const express = require("express");
 const router = new express.Router();
 const Product = require("../models/Product");
+const Tag = require("../models/Tag");
 const authRoutes = require("../routes/auth-routes");
 router.use(authRoutes);
+const sizes = [
+  "30",
+  "31",
+  "32",
+  "33",
+  "34",
+  "35",
+  "36",
+  "37",
+  "38",
+  "39",
+  "40",
+  "41",
+  "42",
+  "43",
+  "44"
+];
+
+const categories = ["men", "women", "kids"];
 
 router.get("/logout", (req, res, next) => {
   req.session.destroy(err => {
@@ -22,7 +42,7 @@ router.use((req, res, next) => {
 //////////////ADD A PRODUCT/////////////////
 
 router.get("/prod-add", (req, res) => {
-  res.render("products_add");
+  res.render("products_add", { sizes, tag: Tag.label });
 });
 
 router.post("/prod-add", (req, res) => {
@@ -43,6 +63,17 @@ router.post("/prod-add", (req, res) => {
     .catch(err => console.log(err));
 });
 
+////////////ADD A TAG///////////////
+
+router.post("/api/tag", (req, res) => {
+  const { label } = req.body;
+  Tag.create({
+    label
+  })
+    .then(tag => res.send(tag.label))
+    .catch();
+});
+
 /////////MANAGE////////////
 ///////////////////////////
 
@@ -57,13 +88,26 @@ router.get("/prod-manage", (req, res) => {
 
 router.get("/product-edit/:id", (req, res) => {
   Product.findById(req.params.id)
-    .then(product => res.render("product_edit", { product }))
+    .then(product => {
+      const checkedSizes = sizes.map(size => {
+        return { size, checked: product.sizes.indexOf(size) >= 0 };
+      });
+      const selectedCategory = categories.map(cat => {
+        return { cat, selected: product.category === cat };
+      });
+      res.render("product_edit", {
+        product,
+        sizes: checkedSizes,
+        category: selectedCategory
+      });
+    })
     .catch(err => console.log(err));
 });
 
 router.post("/product-edit/:id", (req, res) => {
+  console.log(req.body);
   const { name, ref, sizes, description, price, category } = req.body;
-  if (!name || !ref || !sizes || !description || !price || !category) {
+  if (!name || !ref || !sizes || !description || !price) {
     res.render("product_edit", { error: "Invalid input" });
     return;
   }

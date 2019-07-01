@@ -9,10 +9,13 @@
       <label for="sneacker-ref" class="label-ref label">Réf.</label>
       <input type="text" class="input-text input" placeholder="ex: NV23498" name="ref">
     </div>
-    <div class="form-item-wrapper flexed-item">
-      <label for="sneacker-size" class="label-ref label">Size</label>
-      <input type="checkbox" class="input-text input" min="30" max="44" placeholder="ex: 37" name="sizes">
-    </div>
+    <fieldset class="form-item-wrapper flexed-item">
+      <legend>Select sizes</legend>
+      {{#each sizes}}
+      <div><input type="checkbox" class="input-text input" name="sizes" id="{{this}}" value="{{this}}">
+        <label for="{{this}}" class="label-ref label">{{this}}</label></div>
+      {{/each }}
+    </fieldset>
     <div class="form-item-wrapper flexed-item">
       <label for="sneacker-descr" class="label-descr label">Description</label>
       <input type="text" class="input-text input" placeholder="The better sneakers to run" name="description">
@@ -33,21 +36,26 @@
     <div class="form-item-wrapper flexed-item">
       <label class="label">Tags</label>
       <select name="sneacker-secondary-cat" id="secondary_category" class="select">
+        {{#unless tag}}<option value="">No tag yet...</option>{{/unless}}
+        {{#if tag}}
         <option value="">Choose Secondary Category...</option>
-        <option value="">Friendly</option>
-        <option value="">Urban style</option>
-        <option value="">Dope</option>
+        {{#each tag}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+        {{/if}}
       </select>
     </div>
     <button class="button-primary add-sneacker-btn">Add to collection</button>
   </form>
 
-  <form action="POST" class="add-category-form">
+  <form id="new-tag-form" class="add-category-form">
     <h3 class="form-title">Add tags</h3>
     <div class="form-item-wrapper flexed-item">
       <label for="category-name" class="category-name label">Sneaker tag</label>
-      <input type="text" class="input" placeholder="ex: Gangsta">
+      <input type="text" class="input" placeholder="ex: Gangsta" name="label">
     </div>
     <button class="button-primary add-category-btn">Create this category</button>
   </form>
 </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/scripts/tagHandler.js"></script>
